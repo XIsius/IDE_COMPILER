@@ -1,0 +1,2108 @@
+@import "tailwindcss";
+
+/* ========================================
+   VS Code Dark Theme — CSS Design System
+   ======================================== */
+
+:root {
+  /* Core backgrounds */
+  --vsc-bg:              #04070D;
+  --vsc-editor-bg:       #04070D;
+  --vsc-sidebar-bg:      transparent;
+  --vsc-activitybar-bg:  transparent;
+  --vsc-panel-bg:        transparent;
+  --vsc-titlebar-bg:     transparent;
+  --vsc-menubar-bg:      transparent;
+  --vsc-statusbar-bg:    transparent;
+  --vsc-tab-active-bg:   rgba(15,20,35,0.8);
+  --vsc-tab-inactive-bg: transparent;
+  --vsc-input-bg:        rgba(15,20,35,.8);
+  --vsc-dropdown-bg:     rgba(15,20,35,.9);
+  --vsc-list-hover-bg:   rgba(0, 245, 255, 0.1);
+  --vsc-list-active-bg:  rgba(0, 245, 255, 0.2);
+  --vsc-breadcrumb-bg:   transparent;
+
+  /* Borders */
+  --vsc-border:          rgba(0,255,255,.12);
+  --vsc-border-light:    rgba(0,255,255,.2);
+  --vsc-tab-border:      rgba(0,255,255,.12);
+  --vsc-panel-border:    rgba(0,255,255,.12);
+  --vsc-sash:            #00F5FF;
+
+  /* Text */
+  --vsc-fg:              #ffffff;
+  --vsc-fg-dim:          #8b949e;
+  --vsc-fg-bright:       #00F5FF;
+  --vsc-fg-muted:        #6e7681;
+  --vsc-heading:         #ffffff;
+  --vsc-link:            #00F5FF;
+
+  /* Accent / brand */
+  --vsc-accent:          #00F5FF;
+  --vsc-accent-hover:    #0099FF;
+  --vsc-accent-deep:     #7B61FF;
+  --vsc-focus-border:    #00F5FF;
+
+  /* Semantic */
+  --vsc-success:         #00FFA3;
+  --vsc-warning:         #FFB547;
+  --vsc-error:           #FF3E6C;
+  --vsc-info:            #0099FF;
+
+  /* Terminal */
+  --vsc-terminal-bg:     transparent;
+  --vsc-terminal-fg:     #00F5FF;
+  --vsc-terminal-green:  #00FFA3;
+  --vsc-terminal-cursor: #00F5FF;
+
+  /* Shadows */
+  --vsc-shadow:          0 8px 32px rgba(0, 245, 255, 0.1);
+  --vsc-shadow-sm:       0 4px 16px rgba(0, 245, 255, 0.15);
+
+  /* Typography */
+  --vsc-font-family:     'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --vsc-mono:            'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+
+  /* Sizing */
+  --vsc-menubar-h:       35px;
+  --vsc-statusbar-h:     22px;
+  --vsc-activitybar-w:   48px;
+  --vsc-tab-h:           35px;
+  --vsc-sidebar-w:       300px;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0; padding: 0;
+  height: 100%; width: 100%;
+  overflow: hidden;
+  background-color: var(--vsc-bg);
+  color: var(--vsc-fg);
+  font-family: var(--vsc-font-family);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================
+   Scrollbars
+   ======================================== */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+  background: rgba(0, 245, 255, 0.2); 
+  border-radius: 4px;
+  box-shadow: inset 0 0 4px rgba(0,255,255,0.5);
+}
+::-webkit-scrollbar-thumb:hover { 
+  background: rgba(0, 245, 255, 0.4); 
+  box-shadow: inset 0 0 8px rgba(0,255,255,0.8);
+}
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* Sci-Fi Glass Utility Classes */
+.sci-fi-glass {
+  background: rgba(15, 20, 35, 0.65);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(0, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 245, 255, 0.05);
+}
+
+.sci-fi-glass:hover {
+  border-color: rgba(0, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 245, 255, 0.15);
+}
+
+.sci-fi-glass-card {
+  background: linear-gradient(135deg, rgba(15, 20, 35, 0.8) 0%, rgba(10, 15, 29, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 12px;
+}
+
+/* ========================================
+   IDE Shell
+   ======================================== */
+
+.ide-shell {
+  display: flex; flex-direction: column;
+  height: 100vh; width: 100vw;
+  overflow: hidden; background: var(--vsc-bg);
+}
+
+/* Menu bar */
+.ide-menubar {
+  height: 40px; flex-shrink: 0;
+  background: #2b2b2b;
+  border-bottom: 1px solid var(--vsc-border);
+  display: flex; align-items: center; z-index: 100;
+  padding: 0 8px;
+  gap: 4px;
+}
+
+/* MenuBar branding */
+.menubar-brand {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 8px; height: 100%; cursor: pointer;
+  flex-shrink: 0;
+}
+.menubar-brand-icon {
+  width: 20px; height: 20px;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(74,222,128,0.3);
+}
+.menubar-brand-text {
+  font-size: 14px; font-weight: 700; color: #e0e0e0;
+  letter-spacing: -0.3px;
+}
+
+/* MenuBar search */
+.menubar-search {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 5px 14px;
+  min-width: 220px; max-width: 340px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.menubar-search:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.12);
+}
+.menubar-search-text {
+  font-size: 12px; color: #858585;
+  white-space: nowrap; overflow: hidden;
+}
+
+/* MenuBar right actions */
+.menubar-actions {
+  display: flex; align-items: center; gap: 6px;
+  flex-shrink: 0; padding-right: 4px;
+}
+.menubar-run-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 14px; background: #2563eb;
+  color: #fff; border: none; border-radius: 5px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: background 0.15s;
+  font-family: var(--vsc-font-family);
+}
+.menubar-run-btn:hover { background: #1d4ed8; }
+.menubar-debug-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 14px; background: rgba(255,255,255,0.06);
+  color: #cccccc; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 5px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+  font-family: var(--vsc-font-family);
+}
+.menubar-debug-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #ffffff;
+}
+.menubar-action-icon {
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  color: #858585; cursor: pointer; border-radius: 5px;
+  transition: all 0.15s;
+}
+.menubar-action-icon:hover {
+  color: #e0e0e0; background: rgba(255,255,255,0.06);
+}
+.menubar-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+/* ========================================
+   Explorer Sidebar
+   ======================================== */
+
+.explorer-sidebar {
+  width: 200px; flex-shrink: 0;
+  background: #252526;
+  border-right: 1px solid var(--vsc-border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.explorer-header {
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: #bbbbbb;
+  flex-shrink: 0;
+}
+.explorer-content {
+  flex: 1; overflow-y: auto;
+}
+.explorer-folder-header {
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 12px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  color: #cccccc;
+  cursor: pointer; user-select: none;
+  transition: background 0.08s;
+}
+.explorer-folder-header:hover {
+  background: rgba(255,255,255,0.04);
+}
+.explorer-folder-name {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+}
+.explorer-file-list {
+  padding-left: 8px;
+}
+.explorer-file-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 3px 12px 3px 20px;
+  cursor: pointer; transition: background 0.08s;
+  border-radius: 3px;
+  margin: 0 4px;
+}
+.explorer-file-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+.explorer-file-name {
+  font-size: 13px; color: #cccccc;
+}
+.explorer-file-item:first-child {
+  background: rgba(0,122,204,0.15);
+}
+.explorer-file-item:first-child .explorer-file-name {
+  color: #ffffff;
+}
+
+/* ========================================
+   Terminal Section
+   ======================================== */
+
+.terminal-section {
+  height: 240px; flex-shrink: 0;
+  min-height: 100px;
+}
+
+/* Problems badge */
+.problems-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px;
+  background: #3b82f6; color: #fff;
+  border-radius: 8px; font-size: 10px; font-weight: 700;
+  padding: 0 4px; margin-left: 4px;
+}
+
+/* Workspace row */
+.ide-workspace {
+  flex: 1; display: flex; overflow: hidden; min-height: 0;
+}
+
+/* ========================================
+   Activity Bar
+   ======================================== */
+
+.ide-activity-bar {
+  width: var(--vsc-activitybar-w); flex-shrink: 0;
+  background: var(--vsc-activitybar-bg);
+  border-right: 1px solid var(--vsc-border);
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 4px; z-index: 50;
+}
+
+.activity-icon {
+  width: var(--vsc-activitybar-w); height: var(--vsc-activitybar-w);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--vsc-fg-dim); position: relative;
+  transition: color 0.15s;
+}
+.activity-icon:hover { color: var(--vsc-fg-bright); }
+.activity-icon.active { color: var(--vsc-fg-bright); }
+.activity-icon.active::before {
+  content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
+  width: 2px; background: var(--vsc-accent); border-radius: 0 1px 1px 0;
+}
+.activity-spacer { flex: 1; }
+
+/* ========================================
+   Content area
+   ======================================== */
+
+.ide-content {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0;
+}
+
+/* Top half: editor + right panel side-by-side */
+.ide-top-area {
+  flex: 1; display: flex; overflow: hidden; min-height: 0;
+}
+
+/* Editor pane */
+.ide-editor-pane {
+  flex: 1; display: flex; flex-direction: column; min-width: 0;
+  background: var(--vsc-editor-bg);
+}
+
+/* Right panel (Visualizer + AI Tutor) */
+.ide-right-panel {
+  width: 380px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  background: var(--vsc-panel-bg);
+  border-left: 1px solid var(--vsc-border);
+  min-height: 0;
+}
+
+/* ========================================
+   Tab bar (editor & right panel)
+   ======================================== */
+
+.ide-tab-bar {
+  height: var(--vsc-tab-h); flex-shrink: 0;
+  background: var(--vsc-tab-inactive-bg);
+  display: flex; align-items: stretch;
+  overflow-x: auto; overflow-y: hidden;
+  border-bottom: 1px solid var(--vsc-border);
+}
+.ide-tab-bar::-webkit-scrollbar { height: 3px; }
+
+.ide-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px; font-size: 13px;
+  color: var(--vsc-fg-dim); background: var(--vsc-tab-inactive-bg);
+  border-right: 1px solid var(--vsc-tab-border);
+  cursor: pointer; white-space: nowrap; position: relative;
+  transition: background 0.1s, color 0.1s; user-select: none;
+}
+.ide-tab:hover { background: var(--vsc-tab-active-bg); }
+.ide-tab.active {
+  background: var(--vsc-tab-active-bg); color: var(--vsc-fg-bright);
+}
+.ide-tab.active::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: var(--vsc-accent);
+}
+
+.ide-tab-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+.ide-tab-close {
+  width: 16px; height: 16px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 3px; color: transparent; transition: all 0.1s;
+}
+.ide-tab:hover .ide-tab-close,
+.ide-tab.active .ide-tab-close { color: var(--vsc-fg-dim); }
+.ide-tab-close:hover { background: rgba(255,255,255,0.1); color: var(--vsc-fg-bright) !important; }
+
+/* Editor toolbar */
+.ide-editor-toolbar {
+  height: 28px; flex-shrink: 0;
+  background: var(--vsc-breadcrumb-bg);
+  border-bottom: 1px solid var(--vsc-border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 8px; gap: 8px;
+}
+.editor-toolbar-left {
+  display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--vsc-fg-dim);
+}
+.editor-toolbar-right { display: flex; align-items: center; gap: 6px; }
+
+/* Run button */
+.btn-run {
+  display: flex; align-items: center; gap: 5px;
+  padding: 2px 10px; background: var(--vsc-accent-deep);
+  color: #fff; border: none; border-radius: 3px;
+  font-size: 12px; font-family: var(--vsc-font-family);
+  cursor: pointer; font-weight: 500; height: 22px;
+  transition: background 0.15s;
+}
+.btn-run:hover { background: var(--vsc-accent-hover); }
+
+/* Language selector */
+.lang-select {
+  background: var(--vsc-input-bg); color: var(--vsc-fg);
+  border: 1px solid var(--vsc-border); padding: 1px 6px;
+  border-radius: 3px; font-size: 12px; font-family: var(--vsc-font-family);
+  cursor: pointer; outline: none; height: 22px;
+  transition: border-color 0.15s;
+}
+.lang-select:hover { border-color: var(--vsc-border-light); }
+.lang-select:focus { border-color: var(--vsc-focus-border); }
+
+/* Editor container */
+.ide-editor-container { flex: 1; min-height: 0; position: relative; }
+
+/* ========================================
+   Bottom Panel — VS Code Terminal Style
+   ======================================== */
+
+.ide-bottom-panel {
+  height: 250px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  background: var(--vsc-panel-bg);
+  border-top: 1px solid var(--vsc-border);
+  min-height: 100px;
+}
+
+/* Resize handle */
+.bottom-panel-sash {
+  height: 4px; flex-shrink: 0;
+  cursor: ns-resize;
+  background: transparent;
+  transition: background 0.15s;
+  position: relative;
+}
+.bottom-panel-sash:hover,
+.bottom-panel-sash.dragging {
+  background: var(--vsc-sash);
+}
+
+/* Tab bar for bottom panel — exact VS Code style */
+.bottom-panel-header {
+  height: var(--vsc-tab-h); flex-shrink: 0;
+  display: flex; align-items: stretch;
+  justify-content: space-between;
+  background: var(--vsc-panel-bg);
+  border-bottom: 1px solid var(--vsc-border);
+  padding: 0;
+}
+
+.bottom-panel-tabs {
+  display: flex; align-items: stretch;
+  padding-left: 8px; gap: 0;
+}
+
+.bottom-panel-tab {
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 10px; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  font-weight: 600; color: var(--vsc-fg-dim);
+  background: transparent; border: none;
+  cursor: pointer; position: relative;
+  transition: color 0.15s; font-family: var(--vsc-font-family);
+  white-space: nowrap;
+}
+.bottom-panel-tab:hover { color: var(--vsc-fg-bright); }
+.bottom-panel-tab.active { color: var(--vsc-fg-bright); }
+.bottom-panel-tab.active::after {
+  content: ''; position: absolute; bottom: 0; left: 4px; right: 4px;
+  height: 1px; background: var(--vsc-accent);
+}
+
+.bottom-panel-tab-icon { width: 14px; height: 14px; }
+
+/* Right action icons bar — the toolbar shown in SS */
+.bottom-panel-actions {
+  display: flex; align-items: center;
+  padding-right: 4px; gap: 0;
+}
+
+.panel-action-btn {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--vsc-fg-dim); background: none; border: none;
+  border-radius: 3px; cursor: pointer;
+  transition: color 0.1s, background 0.1s;
+}
+.panel-action-btn:hover {
+  color: var(--vsc-fg-bright); background: rgba(255,255,255,0.08);
+}
+
+.panel-action-separator {
+  width: 1px; height: 16px;
+  background: var(--vsc-border); margin: 0 2px;
+}
+
+/* Shell selector button (e.g. "powershell" label) */
+.shell-selector {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 8px; height: 100%;
+  color: var(--vsc-fg); font-size: 12px;
+  font-family: var(--vsc-font-family);
+  background: none; border: none;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.1s;
+}
+.shell-selector:hover {
+  background: rgba(255,255,255,0.05);
+}
+.shell-selector-icon {
+  width: 14px; height: 14px; color: var(--vsc-warning);
+}
+
+/* Terminal body */
+.bottom-panel-body {
+  flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+}
+
+.terminal-output {
+  flex: 1; overflow-y: auto; padding: 8px 16px;
+  font-family: var(--vsc-mono); font-size: 13px; line-height: 1.5;
+  color: var(--vsc-terminal-fg); background: var(--vsc-terminal-bg);
+  white-space: pre-wrap; word-break: break-word;
+}
+
+.terminal-prompt {
+  color: var(--vsc-terminal-green); user-select: none;
+}
+
+.terminal-ready {
+  color: var(--vsc-fg-dim); font-style: italic;
+}
+
+/* ========================================
+   Right Panel tabs
+   ======================================== */
+
+.panel-tabs {
+  height: var(--vsc-tab-h); flex-shrink: 0;
+  background: var(--vsc-sidebar-bg);
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--vsc-border);
+  padding: 0 8px;
+}
+
+.panel-tab {
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 10px; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  font-weight: 600; color: var(--vsc-fg-dim);
+  background: transparent; border: none;
+  cursor: pointer; position: relative;
+  transition: color 0.15s; font-family: var(--vsc-font-family);
+}
+.panel-tab:hover { color: var(--vsc-fg-bright); }
+.panel-tab.active { color: var(--vsc-fg-bright); }
+.panel-tab.active::after {
+  content: ''; position: absolute; bottom: 0; left: 4px; right: 4px;
+  height: 1px; background: var(--vsc-accent);
+}
+.panel-tab-icon { width: 14px; height: 14px; }
+
+.panel-content {
+  flex: 1; min-height: 0; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* Visualizer */
+.visualizer-container {
+  flex: 1; min-height: 0; background: var(--vsc-editor-bg);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* AI Tutor */
+.tutor-container {
+  flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden;
+}
+.tutor-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-bottom: 1px solid var(--vsc-border); flex-shrink: 0;
+}
+.tutor-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.tutor-avatar.neutral      { background: #3c3c3c; }
+.tutor-avatar.encouraging   { background: #1a4731; }
+.tutor-avatar.thinking       { background: #1a3a5c; }
+.tutor-avatar.celebrating    { background: #4a3c00; }
+.tutor-label { font-size: 12px; font-weight: 600; color: var(--vsc-fg-bright); }
+.tutor-body {
+  flex: 1; overflow-y: auto; padding: 14px 16px;
+  font-size: 13px; line-height: 1.6; color: var(--vsc-fg);
+}
+
+/* ========================================
+   Status Bar
+   ======================================== */
+
+.ide-statusbar {
+  height: var(--vsc-statusbar-h); flex-shrink: 0;
+  background: var(--vsc-statusbar-bg);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 8px; font-size: 12px; color: #fff; z-index: 100; user-select: none;
+}
+.statusbar-left, .statusbar-right {
+  display: flex; align-items: center; height: 100%;
+}
+.statusbar-item {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 6px; height: 100%; cursor: default;
+  transition: background 0.1s; white-space: nowrap;
+}
+.statusbar-item:hover { background: rgba(255,255,255,0.12); }
+.statusbar-item svg { width: 14px; height: 14px; }
+
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.status-dot.connected {
+  background: #89d185; box-shadow: 0 0 4px rgba(137,209,133,0.5);
+}
+.status-dot.disconnected {
+  background: #f14c4c; box-shadow: 0 0 4px rgba(241,76,76,0.5);
+}
+
+/* ========================================
+   Sidebar (Curriculum)
+   ======================================== */
+
+.ide-sidebar {
+  width: var(--vsc-sidebar-w); flex-shrink: 0;
+  background: var(--vsc-sidebar-bg);
+  border-right: 1px solid var(--vsc-border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-header {
+  padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--vsc-fg-dim);
+  border-bottom: 1px solid var(--vsc-border); flex-shrink: 0;
+}
+.sidebar-tabs {
+  display: flex; border-bottom: 1px solid var(--vsc-border); flex-shrink: 0;
+}
+.sidebar-tab {
+  flex: 1; padding: 6px 8px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; text-align: center; color: var(--vsc-fg-dim);
+  background: transparent; border: none; cursor: pointer;
+  transition: all 0.15s; position: relative; font-family: var(--vsc-font-family);
+}
+.sidebar-tab:hover { color: var(--vsc-fg-bright); }
+.sidebar-tab.active { color: var(--vsc-fg-bright); }
+.sidebar-tab.active::after {
+  content: ''; position: absolute; bottom: 0; left: 4px; right: 4px;
+  height: 1px; background: var(--vsc-accent);
+}
+.sidebar-content { flex: 1; overflow-y: auto; padding: 8px 0; }
+
+/* Tree view */
+.tree-section { margin-bottom: 4px; }
+.tree-section-header {
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 16px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--vsc-fg-dim); cursor: pointer; user-select: none;
+}
+.tree-section-header:hover { color: var(--vsc-fg-bright); }
+.tree-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 5px 16px 5px 28px; cursor: pointer;
+  transition: background 0.08s; border: 1px solid transparent;
+}
+.tree-item:hover { background: var(--vsc-list-hover-bg); }
+.tree-item:active { background: var(--vsc-list-active-bg); }
+.tree-item-icon { width: 16px; height: 16px; flex-shrink: 0; color: var(--vsc-accent); margin-top: 1px; }
+.tree-item-content { flex: 1; min-width: 0; }
+.tree-item-title { font-size: 13px; color: var(--vsc-fg); font-weight: 500; line-height: 1.3; }
+.tree-item-desc { font-size: 11px; color: var(--vsc-fg-muted); margin-top: 2px; line-height: 1.3; }
+
+/* ========================================
+   Menu Bar Dropdown
+   ======================================== */
+
+.menu-dropdown {
+  background: var(--vsc-dropdown-bg); border: 1px solid var(--vsc-border-light);
+  border-radius: 5px; box-shadow: var(--vsc-shadow);
+  padding: 4px 0; min-width: 260px; z-index: 200; overflow: hidden;
+}
+.menu-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 24px; font-size: 13px; color: var(--vsc-fg);
+  cursor: pointer; transition: background 0.08s;
+  border: none; background: none; width: 100%; text-align: left;
+  font-family: var(--vsc-font-family);
+}
+.menu-item:hover { background: var(--vsc-accent); color: #fff; }
+.menu-item:hover .menu-shortcut { color: rgba(255,255,255,0.8); }
+.menu-item.disabled { color: var(--vsc-fg-muted); cursor: default; }
+.menu-item.disabled:hover { background: none; color: var(--vsc-fg-muted); }
+.menu-shortcut { font-size: 12px; color: var(--vsc-fg-dim); margin-left: 24px; }
+.menu-divider { height: 1px; background: var(--vsc-border-light); margin: 4px 8px; }
+
+/* ========================================
+   Utility
+   ======================================== */
+
+.fade-in { animation: fadeIn 0.2s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+button { border: none; background: none; font-family: inherit; cursor: pointer; }
+::selection { background: rgba(0,122,204,0.3); }
+
+/* ========================================
+   Execution Visualizer
+   ======================================== */
+
+.exec-viz {
+  display: flex; flex-direction: column;
+  height: 100%; overflow: hidden;
+  background: var(--vsc-panel-bg);
+}
+
+.exec-viz-body {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 0; display: flex; flex-direction: column; gap: 0;
+}
+
+.exec-viz-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  padding: 24px;
+}
+.exec-viz-empty-icon { font-size: 32px; opacity: 0.4; }
+.exec-viz-empty-text {
+  font-size: 12px; color: var(--vsc-fg-dim);
+  text-align: center; line-height: 1.5;
+}
+
+/* Current line indicator */
+.exec-line-indicator {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 12px; background: rgba(0,122,204,0.08);
+  border-bottom: 1px solid var(--vsc-border);
+  font-size: 12px; flex-shrink: 0;
+}
+.exec-line-badge {
+  background: var(--vsc-accent); color: #fff;
+  padding: 1px 6px; border-radius: 3px;
+  font-size: 10px; font-weight: 700;
+  font-family: var(--vsc-mono); letter-spacing: 0.5px;
+}
+.exec-line-code {
+  color: var(--vsc-fg); font-family: var(--vsc-mono);
+  font-size: 12px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; flex: 1;
+}
+
+/* Purple Neon Panel Style */
+.neon-panel {
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
+  background: rgba(26, 21, 37, 0.6);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+/* ========================================
+   Playback Controls
+   ======================================== */
+
+.playback-controls {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; background: transparent;
+  flex-shrink: 0;
+}
+
+.playback-buttons {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.playback-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: #c9d1d9; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%; cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.playback-btn:hover:not(:disabled) {
+  color: #fff; background: rgba(168,85,247,0.2); border-color: rgba(168,85,247,0.5);
+  box-shadow: 0 0 15px rgba(168,85,247,0.3);
+}
+.playback-btn:disabled { opacity: 0.3; cursor: default; }
+.playback-btn-main {
+  width: 36px; height: 36px;
+  background: rgba(168,85,247,0.2); color: #c084fc; border: 1px solid rgba(168,85,247,0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(168,85,247,0.2);
+}
+.playback-btn-main:hover:not(:disabled) {
+  background: rgba(168,85,247,0.4); color: #fff;
+  box-shadow: 0 0 20px rgba(168,85,247,0.5);
+}
+
+.playback-speed {
+  display: flex; align-items: center; gap: 2px;
+  background: rgba(255,255,255,0.05); border-radius: 20px;
+  padding: 2px; border: 1px solid rgba(255,255,255,0.1);
+}
+.speed-btn {
+  padding: 2px 8px; font-size: 10px; font-weight: bold;
+  color: #8b949e; background: none; border: none;
+  border-radius: 16px; cursor: pointer;
+  transition: all 0.2s; font-family: var(--vsc-font-family);
+}
+.speed-btn:hover { color: #fff; }
+.speed-btn-active {
+  color: #fff; background: rgba(168,85,247,0.8);
+  box-shadow: 0 0 10px rgba(168,85,247,0.4);
+}
+
+.playback-progress {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  min-width: 0; padding-left: 10px;
+}
+.progress-bar {
+  flex: 1; height: 4px; background: rgba(255,255,255,0.1);
+  border-radius: 2px; overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+.progress-fill {
+  height: 100%; background: #a855f7;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px #a855f7;
+}
+.playback-counter {
+  font-size: 10px; color: var(--vsc-fg-dim);
+  font-family: var(--vsc-mono); white-space: nowrap;
+}
+
+/* ========================================
+   Memory Panel
+   ======================================== */
+
+.mem-panel {
+  border-bottom: 1px solid var(--vsc-border);
+}
+.mem-panel-header {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--vsc-fg-dim); border-bottom: 1px solid var(--vsc-border);
+}
+.mem-panel-icon { font-size: 12px; }
+.mem-panel-title { flex: 1; }
+.mem-panel-count {
+  background: rgba(0,122,204,0.2); color: var(--vsc-accent);
+  padding: 0 5px; border-radius: 8px; font-size: 10px;
+}
+
+.mem-panel-grid {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 8px 10px; min-height: 40px;
+}
+
+.mem-empty {
+  width: 100%; text-align: center;
+  font-size: 11px; color: var(--vsc-fg-muted);
+  padding: 8px 0;
+}
+
+/* Memory card — glassmorphism */
+.mem-card {
+  background: rgba(45,45,45,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(60,60,60,0.6);
+  border-radius: 6px; padding: 6px 8px;
+  min-width: 85px; max-width: 130px;
+  display: flex; flex-direction: column; gap: 3px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.mem-card-highlight {
+  border-color: rgba(0,122,204,0.5);
+}
+.mem-card-glow-enter {
+  animation: glowEnter 1s ease-out;
+  border-color: rgba(0,122,204,0.6);
+}
+.mem-card-glow-update {
+  animation: glowUpdate 1s ease-out;
+  border-color: rgba(78,201,176,0.6);
+}
+
+.mem-card-top {
+  display: flex; align-items: center; justify-content: space-between; gap: 4px;
+}
+.mem-var-name {
+  font-size: 12px; font-weight: 700; color: #9cdcfe;
+  font-family: var(--vsc-mono);
+}
+.mem-type-badge {
+  font-size: 9px; padding: 0 4px; border: 1px solid;
+  border-radius: 3px; font-weight: 600;
+  font-family: var(--vsc-mono);
+}
+
+.mem-card-value {
+  min-height: 18px; display: flex; align-items: center;
+}
+.mem-val-text {
+  font-size: 13px; font-weight: 600; color: #e0e0e0;
+  font-family: var(--vsc-mono); word-break: break-all;
+  line-height: 1.2;
+}
+
+.mem-card-meta {
+  display: flex; align-items: center; gap: 4px;
+  flex-wrap: wrap;
+}
+.mem-meta-item {
+  font-size: 9px; color: var(--vsc-fg-muted);
+  font-family: var(--vsc-mono);
+}
+.mem-addr { opacity: 0.6; }
+.mem-scope-badge {
+  font-size: 9px; padding: 0 4px; border-radius: 3px;
+  color: var(--vsc-fg-dim); font-weight: 600;
+}
+
+/* ========================================
+   Call Stack Panel
+   ======================================== */
+
+.stack-panel {
+  border-bottom: 1px solid var(--vsc-border);
+}
+.stack-panel-header {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--vsc-fg-dim); border-bottom: 1px solid var(--vsc-border);
+}
+.stack-panel-icon { font-size: 12px; }
+.stack-panel-title { flex: 1; }
+.stack-panel-count {
+  background: rgba(220,220,170,0.15); color: #dcdcaa;
+  padding: 0 5px; border-radius: 8px; font-size: 10px;
+}
+
+.stack-panel-body {
+  padding: 8px 10px; display: flex; flex-direction: column; gap: 4px;
+}
+
+.stack-empty {
+  font-size: 11px; color: var(--vsc-fg-muted);
+  text-align: center; padding: 8px 0;
+}
+
+.stack-frame {
+  background: rgba(45,45,45,0.5);
+  border: 1px solid rgba(60,60,60,0.5);
+  border-radius: 5px; padding: 6px 10px;
+  transition: all 0.3s;
+}
+.stack-frame-active {
+  border-color: rgba(0,122,204,0.5);
+  box-shadow: 0 0 8px rgba(0,122,204,0.15);
+  background: rgba(0,122,204,0.08);
+}
+.stack-frame-returning {
+  border-color: rgba(197,134,192,0.5);
+  background: rgba(197,134,192,0.08);
+}
+.stack-frame-module {
+  opacity: 0.4; border-style: dashed;
+}
+
+.stack-frame-top {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.stack-frame-name {
+  font-size: 12px; font-weight: 600; color: #dcdcaa;
+  font-family: var(--vsc-mono);
+}
+.stack-frame-marker {
+  font-size: 9px; color: var(--vsc-accent); font-weight: 700;
+}
+.stack-frame-args {
+  font-size: 10px; color: var(--vsc-fg-dim);
+  font-family: var(--vsc-mono); margin-top: 2px;
+  word-break: break-all;
+}
+.stack-frame-return {
+  font-size: 11px; color: #c586c0;
+  font-family: var(--vsc-mono); margin-top: 3px;
+  font-weight: 600;
+}
+.stack-frame-line {
+  font-size: 9px; color: var(--vsc-fg-muted);
+  margin-top: 2px;
+}
+
+/* ========================================
+   Console Panel
+   ======================================== */
+
+.console-panel {
+  border-bottom: 1px solid var(--vsc-border);
+}
+.console-panel-header {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--vsc-fg-dim); border-bottom: 1px solid var(--vsc-border);
+}
+.console-panel-icon { font-size: 12px; }
+.console-panel-title { flex: 1; }
+.console-panel-count {
+  background: rgba(206,145,120,0.15); color: #ce9178;
+  padding: 0 5px; border-radius: 8px; font-size: 10px;
+}
+
+.console-panel-body {
+  padding: 8px 12px; max-height: 120px; overflow-y: auto;
+  font-family: var(--vsc-mono); font-size: 12px;
+  background: rgba(15,15,15,0.4);
+}
+
+.console-empty {
+  font-size: 11px; color: var(--vsc-fg-muted);
+  font-style: italic;
+}
+
+.console-line {
+  line-height: 1.6;
+}
+.console-prompt {
+  color: var(--vsc-terminal-green); user-select: none;
+}
+.console-text {
+  color: var(--vsc-terminal-fg);
+}
+
+.console-cursor {
+  color: var(--vsc-terminal-cursor);
+  animation: blink 1s step-end infinite;
+  font-size: 12px;
+}
+
+/* ========================================
+   Data Flow Overlay
+   ======================================== */
+
+.dataflow-overlay {
+  padding: 0 10px; flex-shrink: 0; min-height: 0;
+}
+
+.dataflow-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border: 1px solid;
+  border-radius: 12px; font-size: 11px;
+  backdrop-filter: blur(4px);
+  position: relative; overflow: hidden;
+  margin: 4px 0;
+}
+.dataflow-icon { font-size: 12px; }
+.dataflow-label {
+  font-weight: 600; font-family: var(--vsc-mono);
+  font-size: 10px;
+}
+.dataflow-dot {
+  position: absolute; right: 10px; top: 50%;
+  width: 4px; height: 4px; border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+/* ========================================
+   Glow / Flash Animations
+   ======================================== */
+
+@keyframes glowEnter {
+  0%   { box-shadow: 0 0 0 rgba(0,122,204,0); }
+  30%  { box-shadow: 0 0 16px rgba(0,122,204,0.5), inset 0 0 8px rgba(0,122,204,0.1); }
+  100% { box-shadow: 0 0 0 rgba(0,122,204,0); }
+}
+
+@keyframes glowUpdate {
+  0%   { box-shadow: 0 0 0 rgba(78,201,176,0); }
+  20%  { box-shadow: 0 0 12px rgba(204,167,0,0.5); }
+  60%  { box-shadow: 0 0 16px rgba(78,201,176,0.5), inset 0 0 6px rgba(78,201,176,0.1); }
+  100% { box-shadow: 0 0 0 rgba(78,201,176,0); }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}/* ========================================
+   THEME DEFINITIONS
+   ======================================== */
+
+/* 1. Sci-Fi Command Center */
+body[data-theme="scifi"] {
+  --vsc-bg:              #050b14;
+  --vsc-editor-bg:       #06111f;
+  --vsc-sidebar-bg:      #081729;
+  --vsc-activitybar-bg:  #0a1d35;
+  --vsc-panel-bg:        #06111f;
+  --vsc-titlebar-bg:     #081729;
+  --vsc-menubar-bg:      #081729;
+  --vsc-statusbar-bg:    #00bfff;
+  --vsc-tab-active-bg:   #06111f;
+  --vsc-tab-inactive-bg: #0a1d35;
+  --vsc-input-bg:        #081729;
+  --vsc-dropdown-bg:     #081729;
+  --vsc-list-hover-bg:   #0f2b4c;
+  --vsc-list-active-bg:  #0059b3;
+  --vsc-breadcrumb-bg:   #06111f;
+
+  --vsc-border:          #00bfff40;
+  --vsc-border-light:    #00bfff60;
+  --vsc-tab-border:      #00bfff40;
+  --vsc-panel-border:    #00bfff40;
+  --vsc-sash:            #00bfff;
+
+  --vsc-fg:              #b3e0ff;
+  --vsc-fg-dim:          #4da6ff;
+  --vsc-fg-bright:       #ffffff;
+  --vsc-heading:         #00ffff;
+  --vsc-link:            #00ffff;
+  --vsc-accent:          #00ffff;
+  --vsc-font-family:     'Share Tech Mono', 'Orbitron', monospace;
+}
+body[data-theme="scifi"] .ide-shell {
+  background-image: 
+    linear-gradient(#00bfff10 1px, transparent 1px),
+    linear-gradient(90deg, #00bfff10 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 2. Cyberpunk Neon */
+body[data-theme="cyberpunk"] {
+  --vsc-bg:              #090014;
+  --vsc-editor-bg:       #090014;
+  --vsc-sidebar-bg:      #13002b;
+  --vsc-activitybar-bg:  #1d0042;
+  --vsc-panel-bg:        #090014;
+  --vsc-titlebar-bg:     #13002b;
+  --vsc-menubar-bg:      #13002b;
+  --vsc-statusbar-bg:    #ff00ff;
+  --vsc-tab-active-bg:   #090014;
+  --vsc-tab-inactive-bg: #13002b;
+  --vsc-input-bg:        #26005c;
+  --vsc-dropdown-bg:     #13002b;
+  --vsc-list-hover-bg:   #3b008a;
+  --vsc-list-active-bg:  #6a00ff;
+  --vsc-breadcrumb-bg:   #090014;
+
+  --vsc-border:          #ff00ff50;
+  --vsc-border-light:    #00ffff50;
+  --vsc-tab-border:      #ff00ff50;
+  --vsc-panel-border:    #ff00ff50;
+  --vsc-sash:            #ff00ff;
+
+  --vsc-fg:              #e6ccff;
+  --vsc-fg-dim:          #b366ff;
+  --vsc-fg-bright:       #00ffff;
+  --vsc-heading:         #ff00ff;
+  --vsc-link:            #00ffff;
+  --vsc-accent:          #ff00ff;
+}
+body[data-theme="cyberpunk"] .ide-shell {
+  text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);
+}
+
+/* 3. Space Explorer */
+body[data-theme="space"] {
+  --vsc-bg:              #010203;
+  --vsc-editor-bg:       #010203;
+  --vsc-sidebar-bg:      #050810;
+  --vsc-activitybar-bg:  #080c18;
+  --vsc-panel-bg:        #010203;
+  --vsc-titlebar-bg:     #050810;
+  --vsc-menubar-bg:      #050810;
+  --vsc-statusbar-bg:    #3e1c66;
+  --vsc-tab-active-bg:   #010203;
+  --vsc-tab-inactive-bg: #050810;
+  --vsc-input-bg:        #0a1020;
+  --vsc-dropdown-bg:     #050810;
+  --vsc-list-hover-bg:   #152040;
+  --vsc-list-active-bg:  #203060;
+  --vsc-breadcrumb-bg:   #010203;
+
+  --vsc-border:          #2a3a5a;
+  --vsc-border-light:    #3a4a6a;
+  --vsc-tab-border:      #1a2a4a;
+  --vsc-panel-border:    #2a3a5a;
+  --vsc-sash:            #6c4299;
+
+  --vsc-fg:              #c0d0f0;
+  --vsc-fg-dim:          #7080a0;
+  --vsc-fg-bright:       #ffffff;
+  --vsc-heading:         #aaccff;
+  --vsc-link:            #aaccff;
+  --vsc-accent:          #aaccff;
+}
+@keyframes stardrift {
+  from { background-position: 0 0; }
+  to { background-position: -1000px 500px; }
+}
+body[data-theme="space"] .ide-shell {
+  background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 4px),
+                    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  animation: stardrift 60s linear infinite;
+  background-color: transparent !important;
+}
+
+/* 4. AI Hologram */
+body[data-theme="hologram"] {
+  --vsc-bg:              rgba(0, 10, 15, 0.7);
+  --vsc-editor-bg:       rgba(0, 15, 25, 0.6);
+  --vsc-sidebar-bg:      rgba(0, 25, 45, 0.7);
+  --vsc-activitybar-bg:  rgba(0, 35, 60, 0.8);
+  --vsc-panel-bg:        rgba(0, 15, 25, 0.6);
+  --vsc-titlebar-bg:     rgba(0, 25, 45, 0.8);
+  --vsc-menubar-bg:      rgba(0, 25, 45, 0.8);
+  --vsc-statusbar-bg:    rgba(0, 150, 255, 0.8);
+  --vsc-tab-active-bg:   rgba(0, 15, 25, 0.6);
+  --vsc-tab-inactive-bg: rgba(0, 25, 45, 0.7);
+  --vsc-input-bg:        rgba(0, 40, 70, 0.7);
+  --vsc-dropdown-bg:     rgba(0, 25, 45, 0.9);
+  --vsc-list-hover-bg:   rgba(0, 100, 200, 0.4);
+  --vsc-list-active-bg:  rgba(0, 150, 255, 0.6);
+  --vsc-breadcrumb-bg:   transparent;
+
+  --vsc-border:          rgba(0, 150, 255, 0.3);
+  --vsc-border-light:    rgba(0, 200, 255, 0.4);
+  --vsc-tab-border:      rgba(0, 150, 255, 0.2);
+  --vsc-panel-border:    rgba(0, 150, 255, 0.3);
+  --vsc-sash:            rgba(0, 200, 255, 0.8);
+
+  --vsc-fg:              #b3e6ff;
+  --vsc-fg-dim:          #66c2ff;
+  --vsc-fg-bright:       #ffffff;
+  --vsc-heading:         #ffffff;
+  --vsc-link:            #66c2ff;
+  --vsc-accent:          #0099ff;
+}
+body[data-theme="hologram"] .ide-shell {
+  backdrop-filter: blur(10px);
+  background: radial-gradient(circle at center, #001a33 0%, #000 100%);
+}
+
+/* 5. Steampunk */
+body[data-theme="steampunk"] {
+  --vsc-bg:              #2c1f15;
+  --vsc-editor-bg:       #3e2a1b;
+  --vsc-sidebar-bg:      #261910;
+  --vsc-activitybar-bg:  #1b110a;
+  --vsc-panel-bg:        #3e2a1b;
+  --vsc-titlebar-bg:     #261910;
+  --vsc-menubar-bg:      #261910;
+  --vsc-statusbar-bg:    #8b5a2b;
+  --vsc-tab-active-bg:   #3e2a1b;
+  --vsc-tab-inactive-bg: #261910;
+  --vsc-input-bg:        #4e3725;
+  --vsc-dropdown-bg:     #261910;
+  --vsc-list-hover-bg:   #5a3d28;
+  --vsc-list-active-bg:  #8b5a2b;
+  --vsc-breadcrumb-bg:   #3e2a1b;
+
+  --vsc-border:          #5a3d28;
+  --vsc-border-light:    #734f35;
+  --vsc-tab-border:      #261910;
+  --vsc-panel-border:    #5a3d28;
+  --vsc-sash:            #b87333;
+
+  --vsc-fg:              #d9c5b2;
+  --vsc-fg-dim:          #a68b72;
+  --vsc-fg-bright:       #f2e3d5;
+  --vsc-heading:         #f2e3d5;
+  --vsc-link:            #b87333;
+  --vsc-accent:          #b87333;
+  --vsc-font-family:     'Courier New', serif;
+}
+
+/* 6. Retro CRT Terminal */
+body[data-theme="crt"] {
+  --vsc-bg:              #000000;
+  --vsc-editor-bg:       #000000;
+  --vsc-sidebar-bg:      #050505;
+  --vsc-activitybar-bg:  #0a0a0a;
+  --vsc-panel-bg:        #000000;
+  --vsc-titlebar-bg:     #050505;
+  --vsc-menubar-bg:      #050505;
+  --vsc-statusbar-bg:    #003300;
+  --vsc-tab-active-bg:   #000000;
+  --vsc-tab-inactive-bg: #050505;
+  --vsc-input-bg:        #0a0a0a;
+  --vsc-dropdown-bg:     #050505;
+  --vsc-list-hover-bg:   #001a00;
+  --vsc-list-active-bg:  #004d00;
+  --vsc-breadcrumb-bg:   #000000;
+
+  --vsc-border:          #00ff0040;
+  --vsc-border-light:    #00ff0080;
+  --vsc-tab-border:      #00ff0040;
+  --vsc-panel-border:    #00ff0040;
+  --vsc-sash:            #00ff00;
+
+  --vsc-fg:              #00ff00;
+  --vsc-fg-dim:          #00aa00;
+  --vsc-fg-bright:       #55ff55;
+  --vsc-heading:         #00ff00;
+  --vsc-link:            #00ff00;
+  --vsc-accent:          #00ff00;
+  --vsc-font-family:     'VT323', 'Courier New', monospace;
+}
+@keyframes flicker {
+  0% { opacity: 0.95; }
+  5% { opacity: 0.85; }
+  10% { opacity: 0.95; }
+  15% { opacity: 1; }
+  100% { opacity: 1; }
+}
+body[data-theme="crt"] .ide-shell::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 999;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+body[data-theme="crt"] .ide-shell {
+  animation: flicker 0.15s infinite;
+  text-shadow: 0 0 2px rgba(0, 255, 0, 0.5);
+}
+
+/* 7. Matrix Theme */
+body[data-theme="matrix"] {
+  --vsc-bg:              #000000;
+  --vsc-editor-bg:       rgba(0, 0, 0, 0.85);
+  --vsc-sidebar-bg:      rgba(0, 10, 0, 0.9);
+  --vsc-activitybar-bg:  rgba(0, 15, 0, 0.95);
+  --vsc-panel-bg:        rgba(0, 0, 0, 0.85);
+  --vsc-titlebar-bg:     rgba(0, 10, 0, 0.9);
+  --vsc-menubar-bg:      rgba(0, 10, 0, 0.9);
+  --vsc-statusbar-bg:    #002200;
+  --vsc-tab-active-bg:   rgba(0, 0, 0, 0.85);
+  --vsc-tab-inactive-bg: rgba(0, 10, 0, 0.9);
+  --vsc-input-bg:        rgba(0, 20, 0, 0.9);
+  --vsc-dropdown-bg:     rgba(0, 10, 0, 0.9);
+  --vsc-list-hover-bg:   rgba(0, 40, 0, 0.5);
+  --vsc-list-active-bg:  rgba(0, 60, 0, 0.7);
+  --vsc-breadcrumb-bg:   transparent;
+
+  --vsc-border:          #004400;
+  --vsc-border-light:    #006600;
+  --vsc-tab-border:      #002200;
+  --vsc-panel-border:    #004400;
+  --vsc-sash:            #00ff00;
+
+  --vsc-fg:              #00cc00;
+  --vsc-fg-dim:          #008800;
+  --vsc-fg-bright:       #00ff00;
+  --vsc-heading:         #00ff00;
+  --vsc-link:            #00ff00;
+  --vsc-accent:          #00ff00;
+  --vsc-font-family:     'Courier New', monospace;
+}
+@keyframes matrix-bg {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 1000px; }
+}
+body[data-theme="matrix"] .ide-shell {
+  background-color: black;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(0, 255, 0, .3) 25%, rgba(0, 255, 0, .8) 26%, transparent 27%, transparent 74%, rgba(0, 255, 0, .3) 75%, rgba(0, 255, 0, .8) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+  animation: matrix-bg 20s linear infinite;
+}
+
+/* 8. Glassmorphism */
+body[data-theme="glass"] {
+  --vsc-bg:              transparent;
+  --vsc-editor-bg:       rgba(255, 255, 255, 0.05);
+  --vsc-sidebar-bg:      rgba(255, 255, 255, 0.1);
+  --vsc-activitybar-bg:  rgba(255, 255, 255, 0.15);
+  --vsc-panel-bg:        rgba(255, 255, 255, 0.05);
+  --vsc-titlebar-bg:     rgba(255, 255, 255, 0.1);
+  --vsc-menubar-bg:      rgba(255, 255, 255, 0.1);
+  --vsc-statusbar-bg:    rgba(255, 255, 255, 0.2);
+  --vsc-tab-active-bg:   rgba(255, 255, 255, 0.1);
+  --vsc-tab-inactive-bg: rgba(255, 255, 255, 0.02);
+  --vsc-input-bg:        rgba(255, 255, 255, 0.1);
+  --vsc-dropdown-bg:     rgba(25, 25, 35, 0.8);
+  --vsc-list-hover-bg:   rgba(255, 255, 255, 0.15);
+  --vsc-list-active-bg:  rgba(255, 255, 255, 0.25);
+  --vsc-breadcrumb-bg:   transparent;
+
+  --vsc-border:          rgba(255, 255, 255, 0.1);
+  --vsc-border-light:    rgba(255, 255, 255, 0.2);
+  --vsc-tab-border:      rgba(255, 255, 255, 0.05);
+  --vsc-panel-border:    rgba(255, 255, 255, 0.1);
+  --vsc-sash:            rgba(255, 255, 255, 0.5);
+
+  --vsc-fg:              #e0e0e0;
+  --vsc-fg-dim:          #a0a0a0;
+  --vsc-fg-bright:       #ffffff;
+  --vsc-heading:         #ffffff;
+  --vsc-link:            #88ccff;
+  --vsc-accent:          #ffffff;
+}
+@keyframes gradient-bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+body[data-theme="glass"] {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient-bg 15s ease infinite;
+}
+body[data-theme="glass"] .ide-shell {
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* 9. Dark Hacker */
+body[data-theme="dark-hacker"] {
+  --vsc-bg:              #0a0a0a;
+  --vsc-editor-bg:       #0a0a0a;
+  --vsc-sidebar-bg:      #0f0f0f;
+  --vsc-activitybar-bg:  #141414;
+  --vsc-panel-bg:        #0a0a0a;
+  --vsc-titlebar-bg:     #0f0f0f;
+  --vsc-menubar-bg:      #0f0f0f;
+  --vsc-statusbar-bg:    #660000;
+  --vsc-tab-active-bg:   #0a0a0a;
+  --vsc-tab-inactive-bg: #0f0f0f;
+  --vsc-input-bg:        #141414;
+  --vsc-dropdown-bg:     #0f0f0f;
+  --vsc-list-hover-bg:   #1a1a1a;
+  --vsc-list-active-bg:  #2a0000;
+  --vsc-breadcrumb-bg:   #0a0a0a;
+
+  --vsc-border:          #1a1a1a;
+  --vsc-border-light:    #2a2a2a;
+  --vsc-tab-border:      #0f0f0f;
+  --vsc-panel-border:    #1a1a1a;
+  --vsc-sash:            #ff3333;
+
+  --vsc-fg:              #a0a0a0;
+  --vsc-fg-dim:          #606060;
+  --vsc-fg-bright:       #ffffff;
+  --vsc-heading:         #ff3333;
+  --vsc-link:            #ff3333;
+  --vsc-accent:          #ff3333;
+}
+/* 10. Event Horizon */
+body[data-theme="event-horizon"] {
+  --vsc-bg:              #0a0a0c;
+  --vsc-editor-bg:       #0a0a0c;
+  --vsc-sidebar-bg:      #0e0e10;
+  --vsc-activitybar-bg:  #131315;
+  --vsc-panel-bg:        #050506;
+  --vsc-titlebar-bg:     #131315;
+  --vsc-menubar-bg:      #131315;
+  --vsc-statusbar-bg:    #1c1b1d;
+  --vsc-tab-active-bg:   #0a0a0c;
+  --vsc-tab-inactive-bg: #1c1b1d;
+  --vsc-input-bg:        #201f21;
+  --vsc-dropdown-bg:     #2a2a2c;
+  --vsc-list-hover-bg:   #353437;
+  --vsc-list-active-bg:  rgba(0, 242, 255, 0.2);
+  --vsc-breadcrumb-bg:   #0a0a0c;
+
+  --vsc-border:          #3a494b;
+  --vsc-border-light:    #849495;
+  --vsc-tab-border:      #3a494b;
+  --vsc-panel-border:    #3a494b;
+  --vsc-sash:            #00f2ff;
+
+  --vsc-fg:              #e5e1e4;
+  --vsc-fg-dim:          #b9cacb;
+  --vsc-fg-bright:       #e1fdff;
+  --vsc-heading:         #e1fdff;
+  --vsc-link:            #00dbe7;
+  --vsc-accent:          #00f2ff;
+  --vsc-font-family:     'Inter', sans-serif;
+  --vsc-mono:            'JetBrains Mono', monospace;
+}
+@keyframes eh-scanline {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+body[data-theme="event-horizon"] .ide-shell::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 242, 255, 0.05);
+  z-index: 999;
+  pointer-events: none;
+  animation: eh-scanline 8s linear infinite;
+}
+body[data-theme="event-horizon"] .ide-shell {
+  box-shadow: inset 0 0 40px rgba(0, 242, 255, 0.05);
+}
+/* ========================================
+   CINEMATIC EFFECTS UPGRADE
+   ======================================== */
+
+/* Global Transitions */
+body[data-theme] * {
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 1. Sci-Fi - Scanning Laser & Vignette */
+@keyframes scifi-scan {
+  0% { top: -10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 110%; opacity: 0; }
+}
+body[data-theme="scifi"] .ide-shell::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  box-shadow: inset 0 0 100px rgba(0, 191, 255, 0.4);
+  pointer-events: none;
+  z-index: 9998;
+}
+body[data-theme="scifi"] .ide-shell::before {
+  content: " ";
+  position: absolute;
+  width: 100%; height: 3px;
+  background: #00ffff;
+  box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  animation: scifi-scan 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 2. Cyberpunk - Glitch & Heavy Neon */
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
+}
+body[data-theme="cyberpunk"] .ide-shell {
+  box-shadow: inset 0 0 80px rgba(255, 0, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.2);
+  animation: neon-flicker 10s infinite;
+}
+body[data-theme="cyberpunk"] .menubar-brand-text {
+  text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff;
+  animation: neon-flicker 3s infinite;
+}
+
+/* 3. Space - Deep Nebula & Parallax */
+@keyframes nebula-pulse {
+  0% { box-shadow: inset 0 0 150px rgba(108, 66, 153, 0.2); }
+  50% { box-shadow: inset 0 0 250px rgba(108, 66, 153, 0.5); }
+  100% { box-shadow: inset 0 0 150px rgba(108, 66, 153, 0.2); }
+}
+body[data-theme="space"] .ide-shell::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  animation: nebula-pulse 10s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* 4. AI Hologram - Floating Tilt & Data Pulse */
+@keyframes data-pulse {
+  0% { border-color: rgba(0, 150, 255, 0.2); }
+  50% { border-color: rgba(0, 200, 255, 0.8); box-shadow: 0 0 20px rgba(0, 200, 255, 0.4); }
+  100% { border-color: rgba(0, 150, 255, 0.2); }
+}
+body[data-theme="hologram"] .ide-shell {
+  transform: perspective(2000px) rotateX(1deg);
+  transform-origin: bottom;
+  box-shadow: 0 -20px 100px rgba(0, 150, 255, 0.2);
+}
+body[data-theme="hologram"] .ide-sidebar, body[data-theme="hologram"] .ide-editor {
+  animation: data-pulse 4s infinite;
+}
+
+/* 5. Steampunk - Gaslight Flicker & Sepia Overlay */
+@keyframes gaslight {
+  0%, 100% { opacity: 0.8; box-shadow: inset 0 0 100px rgba(139, 90, 43, 0.5); }
+  50% { opacity: 0.95; box-shadow: inset 0 0 120px rgba(184, 115, 51, 0.7); }
+}
+body[data-theme="steampunk"] .ide-shell::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(transparent 50%, rgba(38, 25, 16, 0.8) 100%);
+  animation: gaslight 5s infinite alternate;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* 6. CRT - Curvature & Chromatic Aberration */
+body[data-theme="crt"] {
+  padding: 2vw;
+  background-color: #050505;
+}
+body[data-theme="crt"] .ide-shell {
+  border-radius: 20px;
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 0 30px rgba(0, 255, 0, 0.2);
+  overflow: hidden;
+  text-shadow: 1px 0px 1px rgba(255,0,0,0.5), -1px 0px 1px rgba(0,0,255,0.5), 0 0 3px rgba(0,255,0,0.8);
+}
+
+/* 7. Matrix - Intense Glow */
+body[data-theme="matrix"] .ide-shell {
+  box-shadow: inset 0 0 80px rgba(0, 255, 0, 0.2);
+}
+body[data-theme="matrix"] * {
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+}
+
+/* 8. Glass - Ambient Light Orbs */
+@keyframes orb-float {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  50% { transform: translate(100px, 100px) scale(1.5); opacity: 0.8; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+}
+body[data-theme="glass"]::before {
+  content: " ";
+  position: absolute;
+  top: -20%; left: -10%;
+  width: 50%; height: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 60%);
+  filter: blur(100px);
+  animation: orb-float 15s infinite;
+  z-index: -1;
+}
+
+/* 9. Event Horizon - Black Hole Distortion */
+@keyframes event-horizon-pulse {
+  0% { box-shadow: inset 0 0 50px rgba(0, 242, 255, 0.1); }
+  50% { box-shadow: inset 0 0 150px rgba(0, 242, 255, 0.3), inset 0 0 50px rgba(182, 0, 248, 0.2); }
+  100% { box-shadow: inset 0 0 50px rgba(0, 242, 255, 0.1); }
+}
+body[data-theme="event-horizon"] .ide-shell {
+  animation: event-horizon-pulse 6s ease-in-out infinite;
+}
+/* ========================================
+   ULTRA-CINEMATIC EFFECTS UPGRADE (V2)
+   ======================================== */
+
+/* 1. EVENT HORIZON - Accretion Disk & Falling Stars */
+@keyframes accretion-disk {
+  0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); }
+  50% { transform: rotate(180deg) scale(1.1); filter: hue-rotate(30deg); }
+  100% { transform: rotate(360deg) scale(1); filter: hue-rotate(0deg); }
+}
+@keyframes star-suck {
+  0% { box-shadow: 100px 100px 2px #fff, -100px -100px 2px #00f2ff, 200px -50px 2px #ebb2ff, -200px 50px 2px #fff; transform: scale(1) rotate(0deg); opacity: 1; }
+  100% { box-shadow: 0px 0px 5px #fff, 0px 0px 5px #00f2ff, 0px 0px 5px #ebb2ff, 0px 0px 5px #fff; transform: scale(0.1) rotate(180deg); opacity: 0; }
+}
+body[data-theme="event-horizon"]::before {
+  content: " ";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 150vw; height: 150vw;
+  margin-top: -75vw; margin-left: -75vw;
+  background: conic-gradient(from 0deg, transparent 0%, rgba(0, 242, 255, 0.1) 25%, transparent 50%, rgba(182, 0, 248, 0.1) 75%, transparent 100%);
+  animation: accretion-disk 20s linear infinite;
+  z-index: -2;
+  pointer-events: none;
+}
+body[data-theme="event-horizon"]::after {
+  content: " ";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  animation: star-suck 3s ease-in infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 2. GLASSMORPHISM - Multi-Orbs & Frosted Rim Light */
+@keyframes orb-float-2 {
+  0% { transform: translate(100vw, 0) scale(1); opacity: 0.3; }
+  50% { transform: translate(0, 100vh) scale(2); opacity: 0.6; }
+  100% { transform: translate(100vw, 0) scale(1); opacity: 0.3; }
+}
+body[data-theme="glass"]::after {
+  content: " ";
+  position: absolute;
+  bottom: -20%; right: -10%;
+  width: 60%; height: 60%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.6) 0%, transparent 70%);
+  filter: blur(120px);
+  animation: orb-float-2 20s ease-in-out infinite alternate;
+  z-index: -1;
+  pointer-events: none;
+}
+body[data-theme="glass"] .ide-shell {
+  border-top: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: inset 0 20px 40px -20px rgba(255, 255, 255, 0.4), 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 3. AI HOLOGRAM - Holographic Grid & Glitch Disruptions */
+@keyframes holo-grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 40px; }
+}
+@keyframes holo-glitch {
+  0%, 96%, 98%, 100% { transform: perspective(2000px) rotateX(1deg) skewX(0deg); filter: hue-rotate(0deg); opacity: 1; }
+  97% { transform: perspective(2000px) rotateX(2deg) skewX(5deg) scale(1.02); filter: hue-rotate(90deg); opacity: 0.8; }
+  99% { transform: perspective(2000px) rotateX(0deg) skewX(-5deg) scale(0.98); filter: hue-rotate(-90deg); opacity: 0.9; }
+}
+body[data-theme="hologram"] {
+  background-image: 
+    linear-gradient(rgba(0, 150, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 150, 255, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: holo-grid-move 4s linear infinite;
+}
+body[data-theme="hologram"] .ide-shell {
+  animation: holo-glitch 8s infinite !important;
+}
+body[data-theme="hologram"]::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, rgba(0,150,255,0.05) 0px, rgba(0,150,255,0.05) 1px, transparent 1px, transparent 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 4. DARK HACKER - Breach Warning & Red Static */
+@keyframes hacker-breach {
+  0%, 90%, 100% { box-shadow: inset 0 0 0px rgba(255, 0, 0, 0); }
+  95% { box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.6); }
+}
+@keyframes hacker-static {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
+}
+body[data-theme="dark-hacker"] .ide-shell {
+  animation: hacker-breach 15s infinite;
+  border: 1px solid rgba(255, 0, 0, 0.2) !important;
+}
+body[data-theme="dark-hacker"]::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(255,0,0,0.1) 1px, transparent 1px);
+  background-size: 3px 3px;
+  animation: hacker-static 0.2s linear infinite;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 9999;
+}
+/* ========================================
+   12. FUTURISTIC (Cyberdeck Terminal)
+   ======================================== */
+body[data-theme="futuristic"] {
+  --vsc-bg:              #02080a;
+  --vsc-editor-bg:       rgba(2, 8, 10, 0.85);
+  --vsc-sidebar-bg:      rgba(4, 15, 19, 0.9);
+  --vsc-activitybar-bg:  #02080a;
+  --vsc-panel-bg:        #040f13;
+  --vsc-titlebar-bg:     #040f13;
+  --vsc-menubar-bg:      #040f13;
+  --vsc-statusbar-bg:    #00333d;
+  --vsc-tab-active-bg:   #040f13;
+  --vsc-tab-inactive-bg: #02080a;
+  --vsc-input-bg:        #07171d;
+  --vsc-dropdown-bg:     #040f13;
+  --vsc-list-hover-bg:   rgba(0, 243, 255, 0.1);
+  --vsc-list-active-bg:  rgba(0, 243, 255, 0.25);
+  --vsc-breadcrumb-bg:   transparent;
+
+  --vsc-border:          rgba(0, 243, 255, 0.3);
+  --vsc-border-light:    rgba(0, 243, 255, 0.6);
+  --vsc-tab-border:      rgba(0, 243, 255, 0.3);
+  --vsc-panel-border:    rgba(0, 243, 255, 0.5);
+  --vsc-sash:            #00f3ff;
+
+  --vsc-fg:              #b3f0ff;
+  --vsc-fg-dim:          #66d9ff;
+  --vsc-fg-bright:       #00f3ff;
+  --vsc-heading:         #00f3ff;
+  --vsc-link:            #00f3ff;
+  --vsc-accent:          #00f3ff;
+  --vsc-font-family:     'Share Tech Mono', 'Courier New', monospace;
+}
+
+@keyframes futuristic-data {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 1000px; }
+}
+body[data-theme="futuristic"] .ide-shell {
+  background-color: #02080a;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(0, 243, 255, .15) 25%, rgba(0, 243, 255, .4) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, .15) 75%, rgba(0, 243, 255, .4) 76%, transparent 77%, transparent);
+  background-size: 60px 60px;
+  animation: futuristic-data 15s linear infinite;
+  border: 1px solid rgba(0, 243, 255, 0.5) !important;
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.2), inset 0 0 30px rgba(0, 243, 255, 0.1) !important;
+}
+
+/* Circuit board pattern for sidebar */
+body[data-theme="futuristic"] .ide-sidebar {
+  background-image: 
+    linear-gradient(90deg, rgba(0,243,255,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0,243,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Glowing text everywhere */
+body[data-theme="futuristic"] * {
+  text-shadow: 0 0 4px rgba(0, 243, 255, 0.3);
+}
+
+/* Make primary buttons glow */
+body[data-theme="futuristic"] .menubar-run-btn, 
+body[data-theme="futuristic"] button.bg-blue-600,
+body[data-theme="futuristic"] button.bg-\[\#007acc\] {
+  background-color: rgba(0, 243, 255, 0.2) !important;
+  border: 1px solid #00f3ff !important;
+  color: #00f3ff !important;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.4) !important;
+  text-shadow: 0 0 5px #00f3ff !important;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+body[data-theme="futuristic"] .menubar-run-btn:hover,
+body[data-theme="futuristic"] button.bg-blue-600:hover,
+body[data-theme="futuristic"] button.bg-\[\#007acc\]:hover {
+  background-color: rgba(0, 243, 255, 0.4) !important;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.6) !important;
+}
+
+/* Special styling for Activity Bar Icons to match the left sidebar of the image */
+body[data-theme="futuristic"] .activitybar-item {
+  border-left: 2px solid transparent;
+}
+body[data-theme="futuristic"] .activitybar-item.active {
+  border-left: 2px solid #00f3ff !important;
+  color: #00f3ff !important;
+  background-color: rgba(0, 243, 255, 0.1) !important;
+}
+/* ========================================
+   FUTURISTIC: EXTREME CINEMATIC EFFECTS
+   ======================================== */
+
+/* 1. Radar Sweep / Scanner */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+body[data-theme="futuristic"]::before {
+  content: " ";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200vw; height: 200vw;
+  margin-top: -100vw; margin-left: -100vw;
+  background: conic-gradient(from 0deg, transparent 0%, transparent 60%, rgba(0, 243, 255, 0.05) 90%, rgba(0, 243, 255, 0.3) 100%);
+  animation: radar-sweep 4s linear infinite;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* 2. Deep Vignette & Inner CRT Glow */
+body[data-theme="futuristic"] {
+  background: radial-gradient(circle at center, #02080a 40%, #000000 100%);
+}
+body[data-theme="futuristic"] .ide-shell {
+  box-shadow: 0 0 50px rgba(0, 243, 255, 0.2), inset 0 0 100px rgba(0, 243, 255, 0.1), inset 0 0 20px #000 !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* 3. Tech HUD Brackets (Four Corners) */
+body[data-theme="futuristic"] .ide-shell::before {
+  content: " ";
+  position: absolute;
+  top: 10px; left: 10px; right: 10px; bottom: 10px;
+  border-top: 2px solid rgba(0, 243, 255, 0.5);
+  border-bottom: 2px solid rgba(0, 243, 255, 0.5);
+  border-left: 2px solid rgba(0, 243, 255, 0.5);
+  border-right: 2px solid rgba(0, 243, 255, 0.5);
+  mask-image: linear-gradient(to right, black 20px, transparent 20px, transparent calc(100% - 20px), black calc(100% - 20px)), linear-gradient(to bottom, black 20px, transparent 20px, transparent calc(100% - 20px), black calc(100% - 20px));
+  -webkit-mask-image: linear-gradient(to right, black 20px, transparent 20px, transparent calc(100% - 20px), black calc(100% - 20px)), linear-gradient(to bottom, black 20px, transparent 20px, transparent calc(100% - 20px), black calc(100% - 20px));
+  -webkit-mask-composite: source-in;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 4. Scanning Grid Line */
+@keyframes cyber-scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+body[data-theme="futuristic"] .ide-shell::after {
+  content: " ";
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: #00f3ff;
+  box-shadow: 0 0 15px #00f3ff, 0 0 30px #00f3ff;
+  animation: cyber-scan 6s linear infinite;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* 5. Terminal / Console Micro-glitch */
+@keyframes micro-glitch {
+  0%, 98%, 100% { transform: translate(0, 0); filter: hue-rotate(0deg); opacity: 1; }
+  99% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); opacity: 0.8; }
+}
+body[data-theme="futuristic"] .ide-sidebar,
+body[data-theme="futuristic"] .ide-panel {
+  animation: micro-glitch 5s infinite;
+}
+
+/* ========================================
+   FUTURISTIC: V3 CINEMATIC GRAPHICS
+   ======================================== */
+
+/* 1. 3D Console Perspective for Sidebar */
+body[data-theme="futuristic"] .ide-sidebar {
+  transform: perspective(1000px) rotateY(5deg);
+  transform-origin: left;
+  border-right: 2px solid rgba(0, 243, 255, 0.4);
+  box-shadow: 15px 0 30px rgba(0, 243, 255, 0.05);
+  z-index: 50;
+}
+
+/* 2. HUD Crosshair (Center Screen) */
+@keyframes hud-pulse {
+  0% { transform: scale(0.95); opacity: 0.2; }
+  50% { transform: scale(1.05); opacity: 0.5; }
+  100% { transform: scale(0.95); opacity: 0.2; }
+}
+body[data-theme="futuristic"] .ide-shell::before {
+  content: " ";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  margin-top: -150px; margin-left: -150px;
+  border: 1px dashed rgba(0, 243, 255, 0.4);
+  border-radius: 50%;
+  animation: hud-pulse 3s infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+body[data-theme="futuristic"] .ide-shell::after {
+  content: " ";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 40px; height: 40px;
+  margin-top: -20px; margin-left: -20px;
+  border: 2px solid rgba(0, 243, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00f3ff;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 3. Hexagon Background Grid */
+body[data-theme="futuristic"] {
+  background-image: 
+    linear-gradient(30deg, #02080a 12%, transparent 12.5%, transparent 87%, #02080a 87.5%, #02080a), 
+    linear-gradient(150deg, #02080a 12%, transparent 12.5%, transparent 87%, #02080a 87.5%, #02080a), 
+    linear-gradient(30deg, #02080a 12%, transparent 12.5%, transparent 87%, #02080a 87.5%, #02080a), 
+    linear-gradient(150deg, #02080a 12%, transparent 12.5%, transparent 87%, #02080a 87.5%, #02080a), 
+    linear-gradient(60deg, rgba(0, 243, 255, 0.05) 25%, transparent 25.5%, transparent 75%, rgba(0, 243, 255, 0.05) 75%, rgba(0, 243, 255, 0.05)), 
+    linear-gradient(60deg, rgba(0, 243, 255, 0.05) 25%, transparent 25.5%, transparent 75%, rgba(0, 243, 255, 0.05) 75%, rgba(0, 243, 255, 0.05));
+  background-size: 80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+}
+
+/* 4. Massive Matrix Rain (Cyan) */
+@keyframes cyber-matrix-rain {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 1000px; }
+}
+body[data-theme="futuristic"]::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(0, 243, 255, .1) 25%, rgba(0, 243, 255, .5) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, .1) 75%, rgba(0, 243, 255, .5) 76%, transparent 77%, transparent);
+  background-size: 30px 50px;
+  animation: cyber-matrix-rain 8s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ========================================
+   FUTURISTIC: MONACO EDITOR MATRIX RAIN
+   ======================================== */
+
+/* Force Monaco editor background to be transparent */
+body[data-theme="futuristic"] .monaco-editor,
+body[data-theme="futuristic"] .monaco-editor-background,
+body[data-theme="futuristic"] .monaco-editor .margin {
+  background-color: transparent !important;
+}
+
+body[data-theme="futuristic"] .ide-editor-container {
+  position: relative;
+  background-color: #02080a !important;
+}
+
+/* Apply matrix rain inside editor container */
+body[data-theme="futuristic"] .ide-editor-container::before {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(0, 243, 255, .1) 25%, rgba(0, 243, 255, .4) 26%, transparent 27%, transparent 74%, rgba(0, 243, 255, .1) 75%, rgba(0, 243, 255, .4) 76%, transparent 77%, transparent);
+  background-size: 30px 50px;
+  animation: cyber-matrix-rain 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure code text stays above the rain */
+body[data-theme="futuristic"] .monaco-editor .view-lines,
+body[data-theme="futuristic"] .monaco-editor .view-overlays {
+  position: relative;
+  z-index: 10;
+}
+
+/* ========================================
+   Monaco Editor Transparency Overrides
+   ======================================== */
+.monaco-editor,
+.monaco-editor-background,
+.monaco-editor .inputarea.ime-input,
+.monaco-editor .margin {
+  background-color: transparent !important;
+}
+
+.monaco-editor .minimap,
+.monaco-editor .minimap-decorations-layer {
+  background-color: transparent !important;
+}
+
+/* Custom Scrollbar for Neon panels */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 255, 0.6);
+}

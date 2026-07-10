@@ -1,0 +1,10 @@
+{
+  "name": "Focus IDE",
+  "description": "An IDE with Focus Zen Mode and Voice Macro casting capabilities.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
